@@ -25,6 +25,7 @@ also the most out of date about mechanics.)*
 | **planning** | Scope, sequencing, method | often |
 | **view** | Written *from* other documents (the register, a partner summary). Never a fork. | whenever its sources change |
 | **generated** | Written by a script. Never edit by hand; a test fails when stale. | on `pnpm <script>` |
+| **practice** | How the people work the harness — not rules for Claude | when the practice changes |
 
 ## The documents
 
@@ -38,6 +39,11 @@ also the most out of date about mechanics.)*
 | [`plan/BUILD-METHOD.md`](plan/BUILD-METHOD.md) | decided (method) | How any piece of work is built |
 | [`plan/DEFINITION-OF-DONE.md`](plan/DEFINITION-OF-DONE.md) | decided (method) | The gate |
 | [`plan/FRICTION-LOG.md`](plan/FRICTION-LOG.md) | planning | What annoys the owner, filed against the work it belongs to |
+| [`plan/GOAL.md`](plan/GOAL.md) | planning | The queue for a run, the loop, permissions and the "never" list |
+| [`plan/runs/`](plan/runs/) | run report | One per run, kept as it goes |
+| [`plan/SCREEN-STANDARD.md`](plan/SCREEN-STANDARD.md) | decided (method) | The bar a screen meets before a person looks at it |
+| [`practice/AUTONOMOUS-RUNS.md`](practice/AUTONOMOUS-RUNS.md) | practice | How the owner sets up, starts, steers and reviews a run, with the prompts |
+| [`practice/ADMIN-COMPANION.md`](practice/ADMIN-COMPANION.md) | practice | Admin pages that mirror these docs and take input back |
 
 ## Status
 

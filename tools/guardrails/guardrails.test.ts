@@ -17,6 +17,7 @@ import { describe, expect, it } from 'vitest';
 import { CHECKS, check, explain, scan } from './checks';
 import { duplicateExports, generateCodemap } from './codemap';
 import { findings as inboxFindings, isCommit, openQuestions } from '../inbox/inbox';
+import { parseGoalQueue, progressLine } from '../goals/goals';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -123,5 +124,20 @@ describe('the register — the session-start count is right', () => {
   });
   it('the template ships with no real open question', () => {
     expect(openQuestions(readFileSync(join(ROOT, 'docs', 'OPEN-QUESTIONS.md'), 'utf8'))).toBe(0);
+  });
+});
+
+describe('the goal queue — every session opens knowing the next item', () => {
+  it('reads done and open items in order, and names the next', () => {
+    const md = '1. [x] **Sign-in** — built `abc123`.\n2. [ ] **Exports** — CSV.\n3a. [ ] **Audit log**\n- [ ] **not a queue item**\n';
+    const items = parseGoalQueue(md);
+    expect(items.map((i) => `${i.n}:${i.done}`)).toEqual(['1:true', '2:false', '3a:false']);
+    expect(progressLine(items)).toBe('Goal: 1/3 done — next: item 2, Exports (docs/plan/GOAL.md).');
+  });
+  it('says the queue is empty when every item is ticked', () => {
+    expect(progressLine(parseGoalQueue('1. [x] **A**\n2. [X] **B**\n'))).toMatch(/2\/2 done — the queue is empty/);
+  });
+  it('the template has no real queue, so the session hook stays quiet', () => {
+    expect(progressLine(parseGoalQueue(readFileSync(join(ROOT, 'docs', 'plan', 'GOAL.md'), 'utf8')))).toBeNull();
   });
 });

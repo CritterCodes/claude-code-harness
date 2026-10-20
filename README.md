@@ -166,6 +166,41 @@ cheapest.
 
 ---
 
+## How the owner works it
+
+The pieces above are what Claude meets. These are the human side: how you steer it, review it and let it run unattended.
+
+### 14. Goal files and autonomous runs
+[`docs/practice/AUTONOMOUS-RUNS.md`](docs/practice/AUTONOMOUS-RUNS.md) · [`docs/plan/GOAL.md`](docs/plan/GOAL.md) · [`docs/plan/runs/`](docs/plan/runs/) · [`tools/goals/`](tools/goals/)
+
+A run (overnight, or just "keep going") is a **goal file**, not a long prompt. It holds the queue in order, the loop,
+what to do when idle, standing permissions with your words, and the hard "never" list. A short prompt starts it, and it
+keeps a **run report** as it goes. Items are ticked with their commit in the same commit, and the SessionStart hook prints
+`Goal: 3/8 done — next: item 4` so no session re-derives where things stand. The page includes the prompts we actually use
+(start, pause, morning review, audit).
+
+**Why:** the run can go for hours because nothing in it is a judgment call it shouldn't make. Questions get parked on the
+register and the run moves on, permissions are written down, and the report is the one thing to read in the morning.
+"If it's already built, record that and move on" is a rule because a run once rebuilt finished work.
+
+### 15. The admin companion
+[`docs/practice/ADMIN-COMPANION.md`](docs/practice/ADMIN-COMPANION.md) · [`docs/plan/SCREEN-STANDARD.md`](docs/plan/SCREEN-STANDARD.md)
+
+If your project has a web admin, give it four pages that **mirror the repo's files and take input back**:
+
+- **Questions:** the register, where a partner can agree, disagree or leave a note.
+- **Docs:** every document, readable on a phone.
+- **Goals:** queue progress and the latest run report.
+- **Screens:** a contact sheet of phone and desktop screenshots for each changed screen, which you pass or fail.
+
+The repo stays the truth (generated copies, staleness tests). What people type comes back as input the hooks make the
+next session record. A failed screen becomes a fix the next session starts with.
+
+**Why:** the people who decide shouldn't need GitHub. And AI-built screens pass their tests while still looking wrong on a
+phone, so a screen is done only when a person passes its screenshots.
+
+---
+
 ## What isn't in this repo but matters
 
 - **A person is in the loop as the decider, not the typist.** The harness works because rulings come from a person and
@@ -191,6 +226,7 @@ pnpm install
 pnpm check          # typecheck, lint, tests — including every guardrail's planted test
 pnpm codemap        # regenerate docs/CODEMAP.md after changing an export
 pnpm inbox          # what's unrecorded
+pnpm goals          # where the goal queue stands
 ```
 
 To adopt it:

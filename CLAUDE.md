@@ -18,6 +18,8 @@ If something here disagrees with a document in `docs/`, the document is right an
 | When it is done | [`docs/plan/DEFINITION-OF-DONE.md`](docs/plan/DEFINITION-OF-DONE.md) |
 | Why it is built this way | [`docs/decisions/`](docs/decisions/) — ADRs, append-only |
 | What is annoying | [`docs/plan/FRICTION-LOG.md`](docs/plan/FRICTION-LOG.md) |
+| What to work on, in a run | [`docs/plan/GOAL.md`](docs/plan/GOAL.md) — the queue, in order; keep the report in [`docs/plan/runs/`](docs/plan/runs/) |
+| The bar for a screen | [`docs/plan/SCREEN-STANDARD.md`](docs/plan/SCREEN-STANDARD.md) |
 
 ## Rules about how a session behaves (not in a document, because they are about sessions)
 
@@ -41,6 +43,7 @@ gets a check in `tools/guardrails` that fails the build next time.
 ## What a session does first
 
 1. Read what the SessionStart hook printed. **Unrecorded inbox entries are the first job** — the commit hook blocks
-   `git commit` until each is written into its owning document (`docs/INBOX.md` says how).
+   `git commit` until each is written into its owning document (`docs/INBOX.md` says how). It also prints where the goal
+   queue stands; in a run, that is the next item.
 2. Read `docs/README.md` (status) and `docs/OPEN-QUESTIONS.md` (what you may not decide alone).
 3. If building: follow `docs/plan/BUILD-METHOD.md`. Done means `docs/plan/DEFINITION-OF-DONE.md`, nothing less.

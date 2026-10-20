@@ -11,7 +11,8 @@
     "test": "vitest run",
     "check": "pnpm typecheck && pnpm lint && pnpm test",
     "codemap": "tsx tools/guardrails/codemap.ts --write",
-    "inbox": "tsx tools/inbox/inbox.ts"
+    "inbox": "tsx tools/inbox/inbox.ts",
+    "goals": "tsx tools/goals/goals.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",
