@@ -50,7 +50,7 @@ needs a GitHub account.
 
 ### 3. Goals — the queue and the latest run
 
-Shows the goal file ([`AUTONOMOUS-RUNS.md`](AUTONOMOUS-RUNS.md)) as progress: items done (with their commits) and the
+Shows the goal file ([`GOAL.md`](../plan/GOAL.md); how it's used: [`AUTONOMOUS-RUNS.md`](AUTONOMOUS-RUNS.md)) as progress: items done (with their commits) and the
 next one up. Also shows the company's goals, if you keep them, and the newest run report. Generated from the files, with
 a staleness test.
 

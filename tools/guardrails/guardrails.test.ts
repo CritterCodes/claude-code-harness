@@ -18,6 +18,7 @@ import { CHECKS, check, explain, scan } from './checks';
 import { duplicateExports, generateCodemap } from './codemap';
 import { findings as inboxFindings, isCommit, openQuestions } from '../inbox/inbox';
 import { parseGoalQueue, progressLine } from '../goals/goals';
+import { AGENT_MAX_BODY_LINES, agentProblems, scanAgents } from './agents';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -137,7 +138,42 @@ describe('the goal queue — every session opens knowing the next item', () => {
   it('says the queue is empty when every item is ticked', () => {
     expect(progressLine(parseGoalQueue('1. [x] **A**\n2. [X] **B**\n'))).toMatch(/2\/2 done — the queue is empty/);
   });
-  it('the template has no real queue, so the session hook stays quiet', () => {
-    expect(progressLine(parseGoalQueue(readFileSync(join(ROOT, 'docs', 'plan', 'GOAL.md'), 'utf8')))).toBeNull();
+  // An inline string, not docs/plan/GOAL.md: that file is filled in place, and its first real item must not fail the build.
+  it('template placeholders are not queue items, so an unfilled goal file keeps the session hook quiet', () => {
+    expect(parseGoalQueue('1. [ ] **<Item>** — <what>\n2. [ ] **<Item>** — …\n')).toEqual([]);
+    expect(progressLine([])).toBeNull();
+  });
+});
+
+describe('subagents stay narrow — they report, read the shared docs, and hold no rules of their own (ADR-0002)', () => {
+  const good = '---\nname: scout\ndescription: Finds things.\ntools: Read, Grep\nmodel: haiku\n---\n\nRead [CLAUDE.md](../../CLAUDE.md), then find it.\n';
+  const yes = () => true;
+  it('a good agent has no problems', () => {
+    expect(agentProblems('scout.md', good, yes)).toEqual([]);
+  });
+  it('an agent that can write is refused', () => {
+    expect(agentProblems('scout.md', good.replace('Read, Grep', 'Read, Edit'), yes).join(' ')).toMatch(/may write \(Edit\)/);
+  });
+  it('an agent with a shell must say it never writes or commits', () => {
+    const shell = good.replace('Read, Grep', 'Read, Bash');
+    expect(agentProblems('scout.md', shell, yes).join(' ')).toMatch(/has a shell \(Bash\)/);
+    expect(agentProblems('scout.md', shell.replace('then find it.', 'then find it. You never write, edit or commit.'), yes)).toEqual([]);
+  });
+  it('an agent with no tools list (which grants every tool) is refused', () => {
+    expect(agentProblems('scout.md', good.replace('tools: Read, Grep\n', ''), yes).join(' ')).toMatch(/no tools list/);
+  });
+  it('an agent that does not read CLAUDE.md is refused', () => {
+    expect(agentProblems('scout.md', good.replace('[CLAUDE.md](../../CLAUDE.md)', 'the rules below'), yes).join(' ')).toMatch(/does not link CLAUDE\.md/);
+  });
+  it('an agent that grows into a rulebook is refused', () => {
+    const long = good + Array.from({ length: AGENT_MAX_BODY_LINES }, (_, i) => `- rule ${i}`).join('\n');
+    expect(agentProblems('scout.md', long, yes).join(' ')).toMatch(/max 30/);
+  });
+  it('a link to a doc that does not exist is refused, and a misnamed agent', () => {
+    expect(agentProblems('scout.md', good, (p) => p !== 'CLAUDE.md').join(' ')).toMatch(/links CLAUDE\.md, which does not exist/);
+    expect(agentProblems('finder.md', good, yes).join(' ')).toMatch(/does not match/);
+  });
+  it('the repository’s agents are all narrow', () => {
+    expect(scanAgents(ROOT)).toEqual([]);
   });
 });

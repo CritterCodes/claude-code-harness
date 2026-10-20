@@ -19,7 +19,10 @@ A unit of work is done when **all** of these hold. Not most. "It works on my mac
    start: types and unit tests do not see a broken layout.
 4. **The docs moved with the code** — a ruling recorded with its date and words, the register updated, GUARDRAILS
    updated if a rule changed, `pnpm codemap` run if an export changed.
-5. **The commit says what and why** — the owner's words where a ruling landed, the new exports and why none duplicates
+5. **The `reviewer` agent came back clean** on the diff and the draft commit message, or each problem it found is fixed.
+   It checks the things an author can't see in their own work: a claim in the message that isn't true, a second copy, a
+   register question quietly decided.
+6. **The commit says what and why** — the owner's words where a ruling landed, the new exports and why none duplicates
    one, the red run, the gate result.
-6. **"Deployed" means verified deployed.** If a push is a deploy, check the deploy finished for *that* commit and look
+7. **"Deployed" means verified deployed.** If a push is a deploy, check the deploy finished for *that* commit and look
    at the live page before saying it is live. A pushed fix that never built is not a fix.

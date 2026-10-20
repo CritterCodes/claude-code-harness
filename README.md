@@ -164,13 +164,38 @@ one**, the red first run, the gate result.
 **Why:** the next session's best context is `git log`. Listing new exports forces the duplicate check at the moment it's
 cheapest.
 
+### 14. Subagents: narrow jobs, one truth
+[`.claude/agents/`](.claude/agents/) · [`docs/decisions/ADR-0002-subagents.md`](docs/decisions/ADR-0002-subagents.md) · [`tools/guardrails/agents.ts`](tools/guardrails/agents.ts)
+
+Four read-only helpers, each with one job:
+
+| Agent | When | Why it helps |
+|---|---|---|
+| `reuse-scout` | before any new export | catches the duplicate before it's written; cheap model, seconds |
+| `tracer` | "how does X actually work?" | the many-file read happens in its context, so only the answer comes back |
+| `reviewer` | after the gate, before every commit | fresh eyes: checks the message is true, nothing is duplicated, no register question was decided, the docs moved |
+| `screen-checker` | before screenshots go to a person | you only spend time on screens that already meet the standard |
+
+They report and the main session writes. Each one links the shared docs instead of holding rules of its own. A guardrail
+fails the build if an agent has a file-editing tool, has no tools list, doesn't link `CLAUDE.md`, or grows past 30 lines.
+One honest limit: two of them need a shell for `git`, and a shell *can* write. Those must say in their instructions that
+they never write or commit, and the build checks the sentence is there, but that sentence is all that stops them.
+
+**Why:** subagents keep long sessions sharp and give a second reader. They also make it easy to rebuild the
+contradictory-rulebooks problem: an agent per department, a copy of the rules per model. The rule is *one job per agent,
+one truth for all of them*. The reviewer exists because of a real miss: the session that wrote this harness pushed a
+commit message claiming tests came first when they hadn't, after auditing its own work. On its first run, against that
+commit, the reviewer caught the false line *and* four problems the author's audit had missed: a test that would break the
+first time someone filled in the goal template, a claim about a check that wasn't in the repo, two undefined document
+kinds, and a link to the wrong page.
+
 ---
 
 ## How the owner works it
 
 The pieces above are what Claude meets. These are the human side: how you steer it, review it and let it run unattended.
 
-### 14. Goal files and autonomous runs
+### 15. Goal files and autonomous runs
 [`docs/practice/AUTONOMOUS-RUNS.md`](docs/practice/AUTONOMOUS-RUNS.md) · [`docs/plan/GOAL.md`](docs/plan/GOAL.md) · [`docs/plan/runs/`](docs/plan/runs/) · [`tools/goals/`](tools/goals/)
 
 A run (overnight, or just "keep going") is a **goal file**, not a long prompt. It holds the queue in order, the loop,
@@ -183,7 +208,7 @@ keeps a **run report** as it goes. Items are ticked with their commit in the sam
 register and the run moves on, permissions are written down, and the report is the one thing to read in the morning.
 "If it's already built, record that and move on" is a rule because a run once rebuilt finished work.
 
-### 15. The admin companion
+### 16. The admin companion
 [`docs/practice/ADMIN-COMPANION.md`](docs/practice/ADMIN-COMPANION.md) · [`docs/plan/SCREEN-STANDARD.md`](docs/plan/SCREEN-STANDARD.md)
 
 If your project has a web admin, give it four pages that **mirror the repo's files and take input back**:

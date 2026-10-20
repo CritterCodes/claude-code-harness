@@ -26,6 +26,8 @@ also the most out of date about mechanics.)*
 | **view** | Written *from* other documents (the register, a partner summary). Never a fork. | whenever its sources change |
 | **generated** | Written by a script. Never edit by hand; a test fails when stale. | on `pnpm <script>` |
 | **practice** | How the people work the harness — not rules for Claude | when the practice changes |
+| **inbox** | Human input waiting to be recorded in the document that owns it | every time someone says something that must outlive the chat |
+| **run report** | What one run did — shipped, found, blocked — kept as it goes | during its run, then never |
 
 ## The documents
 
@@ -35,7 +37,7 @@ also the most out of date about mechanics.)*
 | [`INBOX.md`](INBOX.md) | inbox | Human input waiting to be written into the document that owns it |
 | [`GUARDRAILS.md`](GUARDRAILS.md) | decided | Where each kind of thing lives, and what stops a second copy |
 | [`CODEMAP.md`](CODEMAP.md) | generated | Every export that exists |
-| [`decisions/`](decisions/) | decided | ADRs — numbered, append-only, superseded never edited |
+| [`decisions/`](decisions/) | decided | ADRs — numbered, append-only, superseded never edited (0001 one home per function, 0002 subagents) |
 | [`plan/BUILD-METHOD.md`](plan/BUILD-METHOD.md) | decided (method) | How any piece of work is built |
 | [`plan/DEFINITION-OF-DONE.md`](plan/DEFINITION-OF-DONE.md) | decided (method) | The gate |
 | [`plan/FRICTION-LOG.md`](plan/FRICTION-LOG.md) | planning | What annoys the owner, filed against the work it belongs to |

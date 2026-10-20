@@ -16,7 +16,8 @@ short enough to check by eye.
    as a button.
 2. **Nothing says what isn't built.** No "coming soon" or "being built". *(Mechanical: the `not-built-copy` check.)*
 3. **Nothing collides.** No text over text, nothing cut off, no sideways scroll, at phone and desktop widths.
-   *(Mechanical: a screenshot check of every route.)*
+   *(Not in this repo: in the project this came from, a screenshot check of every route at both widths catches it.
+   Add one for your stack; until then this is review-only.)*
 4. **Content before controls.** On a phone, the first item of the list or the first fact of the record is on the first
    screen.
 5. **Words read as sentences.** A value is never pasted into a phrase that no longer reads. Empty values are left out,

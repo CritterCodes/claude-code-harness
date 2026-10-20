@@ -40,6 +40,17 @@ If something here disagrees with a document in `docs/`, the document is right an
 or changing one, `pnpm codemap` (the test fails on a stale map). Every duplicate you find is folded into its home **and**
 gets a check in `tools/guardrails` that fails the build next time.
 
+## Subagents (ADR-0002)
+
+Four read-only helpers in `.claude/agents/`. They report; you decide and write.
+
+- **`reuse-scout`** — before writing any new export.
+- **`tracer`** — when answering means reading across many files, or "how does X actually work?".
+- **`reviewer`** — after the gate is green, before every commit, with the diff and the draft message. Fix what it finds.
+- **`screen-checker`** — before screenshots go to a person.
+
+Read-only lookups may run in parallel; edits never do.
+
 ## What a session does first
 
 1. Read what the SessionStart hook printed. **Unrecorded inbox entries are the first job** — the commit hook blocks

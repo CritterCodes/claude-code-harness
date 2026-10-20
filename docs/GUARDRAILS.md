@@ -20,6 +20,7 @@ The checks live in `tools/guardrails/` and run in `pnpm test`. **Each one is pro
 | Logging in shipped code | `console.warn` / `console.error` only (or your logger) | ✅ ESLint `no-console` |
 | Screen copy promising unbuilt work | nowhere — a screen never says what is not built | ✅ check `not-built-copy` |
 | An export defined twice | — | ✅ `duplicateExports` (a re-export is fine) |
+| A subagent | `.claude/agents/*.md` — one job, no file-editing tool, links the docs, ≤ 30 lines (ADR-0002) | ✅ `tools/guardrails/agents.ts` · a shell agent's "never writes or commits" is checked present, not obeyed — review-only |
 | <your next one> | <its home> | review-only |
 
 ## How a row is born

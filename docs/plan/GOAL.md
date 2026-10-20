@@ -27,7 +27,8 @@ report, and go to the next item.
 
 In this order, logging each in the report:
 
-- **Bug-hunt today's work.** Re-read the diffs with fresh eyes. Every bug gets a failing test first, then the fix.
+- **Bug-hunt today's work.** Give the `reviewer` agent the day's commits (fresh eyes, not the author's), then re-read
+  what it flags. Every bug gets a failing test first, then the fix.
 - **Open fixes** from testers or the screen review.
 - **Docs against code.** A claim the code doesn't back gets fixed in the doc or the code.
 - **Guardrail debt.** A rule GUARDRAILS marks review-only gets made mechanical.
