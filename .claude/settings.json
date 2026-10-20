@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pnpm -s -C \"$CLAUDE_PROJECT_DIR\" inbox --hook session",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pnpm -s -C \"$CLAUDE_PROJECT_DIR\" inbox --hook commit",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
